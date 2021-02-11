@@ -3,11 +3,13 @@ services:
   postgres: 
     image: "postgres"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./db/data:/var/lib/postgresql/data
   nginx:
-    build: 
-      context: ./nginx
-      dockerfile: Dockerfile.dev
+    image: nginx:1.19-alpine 
+    volumes:
+      - ./nginx/conference.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 3000:80
   accounts:
     build:
       context: ./accounts
@@ -34,10 +36,11 @@ services:
     environment:
       - PORT=80
   badges:
+    depends_on:
+      - postgres
     build:
       context: ./badges
       dockerfile: Dockerfile.dev
     volumes:
       - ./badges/src:/usr/src/app/src
-    environment:
-      - PORT=80
+    env_file: ./badges/.env
