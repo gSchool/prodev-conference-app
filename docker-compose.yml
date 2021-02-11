@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  postgres: 
+    image: "postgres"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+  accounts:
+    build:
+      context: ./accounts
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./accounts/src:/usr/src/app/src
+    environment:
+      - PORT=80
+      - JWT_SECRET=supersecret
+  presentations:
+    build:
+      context: ./presentations
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./presentations/src:/usr/src/app/src
+    environment:
+      - PORT=80
+  events:
+    build:
+      context: ./events
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./events/src:/usr/src/app/src
+    environment:
+      - PORT=80
+  badges:
+    build:
+      context: ./badges
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./badges/src:/usr/src/app/src
+    environment:
+      - PORT=80
