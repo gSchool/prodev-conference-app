@@ -16,8 +16,8 @@ RUN npm install
 COPY . .
 
 # Add an entrypoint to wait for postgres to be up and run migrations
-#COPY docker-entrypoint.sh /usr/local/bin/
-#RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
-#ENTRYPOINT ["sh","docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["sh","docker-entrypoint.sh"]
 
 CMD [ "npm", "run", "dev" ]
