@@ -6,3 +6,11 @@ please read the instructions in each project's README files.
 
 - [Frontend README](./frontend/README.md)
 - [Backend README](./backend/README.md)
+
+
+# To run
+`docker-compose build`
+
+`docker-compose up`
+
+The backend will be started on localhost:8080 

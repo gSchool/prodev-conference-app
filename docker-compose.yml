@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: backend
+    depends_on:
+      - postgres
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: conference_app
+      PGUSER: conference_app_user
+      PGPASSWORD: banana9342
+      PGAPPNAME: conference-go
+      PORT: 8080
+      JWT_SECRET: 342sdw1xljk*m^lkasjmdflkj290=113x7yosxs7923dckl3exq
+    ports:
+      - "8080:8080"
+    command: npm run dev
+  #  Adding volumes will speed up development as it will sync local chances with the docker image
+  #    volumes:
+  #      - ./src:/usr/src/app
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: conference_app_user
+      POSTGRES_PASSWORD: banana9342
+      POSTGRES_DB: conference_app
+
+# web:
+#   build: frontend
