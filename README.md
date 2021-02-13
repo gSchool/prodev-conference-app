@@ -13,4 +13,7 @@ please read the instructions in each project's README files.
 
 `docker-compose up`
 
-The backend will be started on localhost:8080 
+The backend will be started on localhost:8080
+
+# Architecture 
+![Architecture diagram](./arch-diagram.png)

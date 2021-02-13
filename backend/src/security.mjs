@@ -52,6 +52,7 @@ export async function bearer(ctx, next) {
 }
 
 export async function identify(ctx, next) {
+  //rewrite to ask authorizor service
   let { rows } = await pool.query(`
     SELECT id FROM accounts WHERE email = $1
   `, [ctx.claims.email]);
