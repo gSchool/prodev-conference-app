@@ -28,5 +28,12 @@ services:
       POSTGRES_PASSWORD: banana9342
       POSTGRES_DB: conference_app
 
-# web:
-#   build: frontend
+  web:
+    build: frontend
+    depends_on:
+      - backend
+    environment:
+      REACT_APP_API_URL: http://localhost:8080/api
+    ports:
+     - "3000:3000"
+    command: npm run start
