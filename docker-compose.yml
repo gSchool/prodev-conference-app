@@ -15,9 +15,8 @@ services:
     ports:
       - "8080:8080"
     command: npm run dev
-  #  Adding volumes will speed up development as it will sync local chances with the docker image
-  #    volumes:
-  #      - ./src:/usr/src/app
+    volumes:
+      - .:/usr/src/app
 
   postgres:
     image: postgres:10.4
@@ -27,13 +26,51 @@ services:
       POSTGRES_USER: conference_app_user
       POSTGRES_PASSWORD: banana9342
       POSTGRES_DB: conference_app
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
 
   web:
     build: frontend
     depends_on:
-      - backend
+      - gateway
     environment:
-      REACT_APP_API_URL: http://localhost:8080/api
+      REACT_APP_API_URL: http://localhost:80/api
     ports:
      - "3000:3000"
     command: npm run start
+
+  gateway:
+    build: gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - authorizor
+      - backend
+
+
+  authorizor:
+    build: authorizor
+    expose:
+      - "8081"
+    depends_on:
+      - authdb
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: authentication
+      PGUSER: conference_auth_user
+      PGPASSWORD: banana9342
+      PGAPPNAME: conference-go-auth
+      PORT: 8081
+      JWT_SECRET: 3asdf42sdw1xljk*m^lkasjmdflkj290=113x7yosxs7923dckl3exq
+
+  authdb:
+    image: postgres:10.4
+    ports:
+      - "35434:5432"
+    environment:
+      POSTGRES_USER: conference_auth_user
+      POSTGRES_PASSWORD: banana9342
+      POSTGRES_DB: authentication
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
