@@ -46,15 +46,6 @@ exports.up = function(db) {
       type: 'int',
       unsigned: true,
       notNull: true,
-      foreignKey: {
-        name: 'events_accounts_id_fk',
-        table: 'accounts',
-        rules: {
-          onDelete: 'CASCADE',
-          onUpdate: 'RESTRICT',
-        },
-        mapping: 'id',
-      }
     },
     location_id: {
       type: 'int',

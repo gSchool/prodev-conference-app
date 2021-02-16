@@ -2,7 +2,7 @@ import { pool } from '../db/index.mjs';
 import Router from '@koa/router';
 import { authorize, identify } from '../security.mjs';
 
-async function getOneEvent(id, email) {
+async function getOneEvent(id, account_id) {
   const { rows } = await pool.query(`
     SELECT e.id, e.name, e.from, e.to, e.description, e.logo_url AS "logoUrl", e.created, e.updated, e.version,
            e.number_of_presentations AS "numberOfPresentations",
@@ -12,10 +12,9 @@ async function getOneEvent(id, email) {
            l.created AS location_created, l.updated AS location_updated
     FROM events e
     JOIN locations l ON (e.location_id = l.id)
-    JOIN accounts a ON (e.account_id = a.id)
     WHERE e.id = $1
-    AND a.email = $2
-  `, [id, email]);
+    AND e.account_id = $2
+  `, [id, account_id]);
 
   if (rows.length === 0) {
     return null;
@@ -54,14 +53,13 @@ export const router = new Router({
 
 router.use(authorize);
 
-router.get('/', async ctx => {
+router.get('/', identify, async ctx => {
   const { rows } = await pool.query(`
       SELECT e.id, e.name, e.from, e.to, e.description, e.logo_url AS "logoUrl"
       FROM events e
-      JOIN accounts a ON(e.account_id = a.id)
-      WHERE a.email = $1
+      WHERE e.account_id = $1
     `,
-    [ctx.claims.email]
+    [ctx.claims.id]
   );
   ctx.body = rows;
 });
@@ -117,9 +115,9 @@ router.post('/', identify, async ctx => {
   };
 });
 
-router.get('/:id', async ctx => {
+router.get('/:id', identify,async ctx => {
   const { id } = ctx.params;
-  const event = await getOneEvent(id, ctx.claims.email);
+  const event = await getOneEvent(id, ctx.claims.id);
 
   if (event === null) {
     ctx.status = 404;
@@ -132,16 +130,16 @@ router.get('/:id', async ctx => {
   ctx.body = event;
 });
 
-router.delete('/:id', async ctx => {
+router.delete('/:id', identify, async ctx => {
   const { id } = ctx.params;
-  const event = await getOneEvent(id, ctx.claims.email);
+  const event = await getOneEvent(id, ctx.claims.id);
 
   if (event !== null) {
     await pool.query(`
       DELETE FROM events
       WHERE id = $1
-        AND account_id IN(SELECT id from accounts WHERE email = $2)
-    `, [id, ctx.claims.email]);
+        AND account_id = $2)
+    `, [id, ctx.claims.id]);
   }
 
   ctx.body = event || {};

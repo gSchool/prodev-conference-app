@@ -29,8 +29,7 @@ router.get('/', async ctx => {
     SELECT p.id, p.email, p.name, p.company_name AS "companyName", p.created
     FROM attendees p
     JOIN events e ON (p.event_id = e.id)
-    JOIN accounts a ON (e.account_id = a.id)
-    WHERE a.id = $1
+    WHERE e.account_id = $1
     AND e.id = $2
   `, [ctx.claims.id, eventId])
   ctx.body = rows;
@@ -76,9 +75,8 @@ router.post('/', async ctx => {
     INSERT INTO attendees (name, email, company_name, event_id)
     SELECT $1, $2, $3, e.id
     FROM events e
-    JOIN accounts a ON (e.account_id = a.id) 
     WHERE e.id = $4
-    AND a.id = $5
+    AND e.account_id = $5
     RETURNING id, created
   `, [email, name, companyName, eventId, accountId]);
 

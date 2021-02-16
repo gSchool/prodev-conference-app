@@ -3,6 +3,7 @@ services:
     build: backend
     depends_on:
       - postgres
+      - authorizor
     environment:
       PGHOST: postgres
       PGPORT: 5432
@@ -11,7 +12,7 @@ services:
       PGPASSWORD: banana9342
       PGAPPNAME: conference-go
       PORT: 8080
-      JWT_SECRET: 342sdw1xljk*m^lkasjmdflkj290=113x7yosxs7923dckl3exq
+      AUTH_API_URL: http://authorizor:8082/api
     ports:
       - "8080:8080"
     command: npm run dev
