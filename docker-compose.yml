@@ -16,16 +16,19 @@ services:
     depends_on: 
       - backend
     ports:
-      - "8080:80"
+      # - "8080:80"
+      - "3000:80"
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     depends_on: 
       - postgres
+    ports:
+      - "8080:80"
     environment:
-      PORT: 80
-      JWT_SECRET: 29834rj9038qjf93erf8je9w8rfj98j324r8
+      # PORT: 80
+      JWT_SECRET: secret
       PGHOST: postgres
       PGPORT: 5432
       PGAPPNAME: Conference GO!
@@ -37,12 +40,12 @@ services:
       # Thes values are the same as below
       PGDATABASE: conference_app 
       PGUSER: conference_app_user
-      PGPASSWORD: q390284nq4fdfq93
+      PGPASSWORD: 5UvUwY3xRH86xXhx
   postgres:
     image: postgres:13
     environment:
       POSTGRES_USER: conference_app_user
-      POSTGRES_PASSWORD: q390284nq4fdfq93
+      POSTGRES_PASSWORD: 5UvUwY3xRH86xXhx
       POSTGRES_DB: conference_app
     volumes:
       - ./data:/var/lib/postgresql/data

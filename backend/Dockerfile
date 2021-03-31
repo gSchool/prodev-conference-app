@@ -13,6 +13,7 @@ COPY . .
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait /wait
 RUN chmod +x /wait
 
+EXPOSE 80
 # Use the /wait command to wait for PostgreSQL
 # Run the migrations
 # Start the app

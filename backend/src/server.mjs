@@ -8,7 +8,7 @@ import { bearer } from './security.mjs';
 
 dotenv.config();
 
-const port = Number.parseInt(process.env['PORT']);
+const port = Number.parseInt(process.env['PORT'] || '8080');
 if (Number.isNaN(port)) {
   console.error('ERROR: Missing PORT environment variable.');
   process.exit(1);

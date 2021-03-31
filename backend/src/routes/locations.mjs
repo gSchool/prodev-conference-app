@@ -23,6 +23,7 @@ router.get('/', async ctx => {
 });
 
 router.post('/', async ctx => {
+  console.log('ctx', ctx)
   trimProperty(ctx.request.body, 'name');
   trimProperty(ctx.request.body, 'city');
   trimProperty(ctx.request.body, 'state');
