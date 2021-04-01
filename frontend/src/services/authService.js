@@ -1,12 +1,11 @@
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 import React, { useContext, useState } from "react";
 import jwtDecode from "jwt-decode";
-import http, { apiUrl } from "./httpService";
+import http from "./httpService";
 import { Redirect } from "react-router-dom";
 
-const apiEndpointSession = apiUrl + "/session";
-const apiEndpointRegister = apiUrl + "/accounts";
-
+const apiEndpointSession = "/api/session";
+const apiEndpointRegister = "/api/accounts";
 const tokenKey = "token";
 
 http.setJwt(getJwt());
