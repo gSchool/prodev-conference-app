@@ -4,17 +4,17 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
+      # args:
         # The port number, here, comes from the fact that
         # in the ports section after this one, we map 8080
         # on the local computer to 80 in the running
         # container.
-        REACT_APP_API_URL: http://localhost:8080/api
+        # REACT_APP_API_URL: http://localhost:8080/api
     # This depends on backend because Nginx will stop if
     # it can't find the DNS entry named "backend" when
     # it starts
     depends_on: 
-      - backend
+      - accounts
     ports:
       # - "8080:80"
       - "3000:80"
@@ -27,7 +27,7 @@ services:
     ports:
       - "8080:80"
     environment:
-      # PORT: 80
+      PORT: 80
       JWT_SECRET: secret
       PGHOST: postgres
       PGPORT: 5432
@@ -38,6 +38,24 @@ services:
       WAIT_HOSTS: postgres:5432
 
       # Thes values are the same as below
+      PGDATABASE: conference_app 
+      PGUSER: conference_app_user
+      PGPASSWORD: 5UvUwY3xRH86xXhx
+  accounts:
+    build:
+      context: ./accounts
+      dockerfile: Dockerfile
+    depends_on: 
+      - backend
+    ports:
+      - "8081:80"
+    environment:
+      PORT: 80
+      JWT_SECRET: secret
+      PGHOST: postgres
+      PGPORT: 5432
+      PGAPPNAME: Conference GO!
+
       PGDATABASE: conference_app 
       PGUSER: conference_app_user
       PGPASSWORD: 5UvUwY3xRH86xXhx

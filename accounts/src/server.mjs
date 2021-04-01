@@ -14,7 +14,7 @@ if (Number.isNaN(port)) {
   process.exit(1);
 }
 
-const app = new Koa();
+const app = new Koa()
 app.use(cors({
   allowHeaders: ['Authorization', 'Content-Type']
 }));

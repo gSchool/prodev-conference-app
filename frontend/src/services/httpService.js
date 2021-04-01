@@ -1,6 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { toast } from "react-toastify";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -27,7 +30,7 @@ function setJwt(jwt) {
   }
 }
 
-export const apiUrl = process.env['REACT_APP_API_URL'];
+export const apiUrl = '/api';
 
 export default {
   get: axios.get,
@@ -35,5 +38,4 @@ export default {
   put: axios.put,
   delete: axios.delete,
   setJwt,
-  apiUrl,
 };
