@@ -1,9 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { toast } from "react-toastify";
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
