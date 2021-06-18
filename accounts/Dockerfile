@@ -18,4 +18,4 @@ EXPOSE 80
 # Use the /wait command to wait for PostgreSQL
 # Run the migrations
 # Start the app
-CMD /wait && npm run migrate -- up && npm run start
+CMD /wait && npm run start

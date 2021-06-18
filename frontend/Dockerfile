@@ -15,6 +15,8 @@ COPY . .
 ARG REACT_APP_API_URL
 RUN ["npm", "run", "build"]
 
+EXPOSE 80 
+
 # Host the content from the build
 FROM nginx:latest
 # This is the directory from which Nginx serves
